@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XEN Miner Leaderboard</title>
+    <style>
+        :root {
+            --bg: #0d1117;
+            --card: #161b22;
+            --border: #30363d;
+            --text: #c9d1d9;
+            --accent: #58a6ff;
+            --gold: #f0c040;
+            --green: #3fb950;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding: 24px;
+        }
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 4px;
+            background: linear-gradient(135deg, var(--accent), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .subtitle { color: #8b949e; margin-bottom: 24px; font-size: 0.95rem; }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+        .stat-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 18px 20px;
+        }
+        .stat-card .label { font-size: 0.8rem; color: #8b949e; text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat-card .value { font-size: 1.6rem; font-weight: 700; margin-top: 6px; color: var(--accent); }
+        .stat-card .value.gold { color: var(--gold); }
+        .stat-card .value.green { color: var(--green); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        th, td { padding: 12px 16px; text-align: left; }
+        th { background: #21262d; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; color: #8b949e; }
+        tr { border-bottom: 1px solid var(--border); }
+        tr:last-child { border-bottom: none; }
+        tr:hover { background: #1c2128; }
+        .rank { font-weight: 700; width: 60px; }
+        .rank-1 { color: var(--gold); }
+        .rank-2 { color: #c0c0c0; }
+        .rank-3 { color: #cd7f32; }
+        .account { font-family: 'SF Mono', Consolas, monospace; font-size: 0.85rem; color: var(--accent); }
+        .num { font-variant-numeric: tabular-nums; }
+        .badge {
+            display: inline-block;
+            background: rgba(88, 166, 255, 0.15);
+            color: var(--accent);
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .badge.gold { background: rgba(240, 192, 64, 0.15); color: var(--gold); }
+        @media (max-width: 640px) { .hide-mobile { display: none; } }
+    </style>
+</head>
+<body>
+    <h1>⛏️ XEN Miner Leaderboard</h1>
+    <p class="subtitle">Argon2ID Proof-of-Work Mining Network</p>
+
+    <div class="stats">
+        <div class="stat-card">
+            <div class="label">Difficulty</div>
+            <div class="value">{{ difficulty }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="label">Hash Rate (kH/s)</div>
+            <div class="value green">{{ total_attempts_per_second }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="label">Active Miners</div>
+            <div class="value">{{ latest_miners }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="label">Block Rate</div>
+            <div class="value gold">{{ latest_rate }}</div>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>Account</th>
+                <th>Total Blocks</th>
+                <th class="hide-mobile">Hashes/sec</th>
+                <th class="hide-mobile">Super Blocks</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for rank, account, total_blocks, hashes_per_second, super_blocks in leaderboard %}
+            <tr>
+                <td class="rank rank-{{ rank if rank <= 3 else '' }}">{{ rank }}</td>
+                <td class="account">{{ account }}</td>
+                <td class="num">{{ "{:,}".format(total_blocks) }}</td>
+                <td class="num hide-mobile">{{ hashes_per_second }}</td>
+                <td class="hide-mobile">
+                    {% if super_blocks > 0 %}
+                    <span class="badge gold">{{ super_blocks }}</span>
+                    {% else %}
+                    <span class="badge">0</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hash Rate — XEN Miner</title>
+    <style>
+        :root {
+            --bg: #0d1117;
+            --card: #161b22;
+            --border: #30363d;
+            --text: #c9d1d9;
+            --green: #3fb950;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 24px;
+        }
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 40px 48px;
+            text-align: center;
+            max-width: 480px;
+            width: 100%;
+        }
+        h1 { font-size: 1.4rem; margin-bottom: 8px; color: var(--text); }
+        .subtitle { color: #8b949e; font-size: 0.9rem; margin-bottom: 28px; }
+        .rate {
+            font-size: 3.2rem;
+            font-weight: 800;
+            color: var(--green);
+            font-variant-numeric: tabular-nums;
+        }
+        .unit { font-size: 1.2rem; color: #8b949e; font-weight: 400; }
+        a { color: #58a6ff; text-decoration: none; display: inline-block; margin-top: 24px; font-size: 0.9rem; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>⛏️ Network Hash Rate</h1>
+        <p class="subtitle">Based on recent mining attempts</p>
+        <div class="rate">{{ total_attempts_per_second }}<span class="unit"> H/s</span></div>
+        <a href="/leaderboard">← Back to Leaderboard</a>
+    </div>
+</body>
+</html>

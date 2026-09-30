@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, redirect
 from passlib.hash import argon2
 import sqlite3
 from datetime import datetime
@@ -115,6 +115,10 @@ def get_difficulty2(account=None):
     else:
         cached_difficulty = '8'  # Return '8' or some default if no difficulty level is found
         return cached_difficulty
+
+@app.route('/', methods=['GET'])
+def index():
+    return redirect('/leaderboard')
 
 @app.route('/difficulty', methods=['GET'])
 @app.route('/difficulty/<account>', methods=['GET'])
